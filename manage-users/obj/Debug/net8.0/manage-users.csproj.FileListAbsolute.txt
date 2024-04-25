@@ -1,0 +1,10 @@
+/Users/tyler/backend-workspace/ProjectB/ProjectB-manage-users/manage-users/obj/Debug/net8.0/manage-users.csproj.AssemblyReference.cache
+/Users/tyler/backend-workspace/ProjectB/ProjectB-manage-users/manage-users/obj/Debug/net8.0/manage-users.GeneratedMSBuildEditorConfig.editorconfig
+/Users/tyler/backend-workspace/ProjectB/ProjectB-manage-users/manage-users/obj/Debug/net8.0/manage-users.AssemblyInfoInputs.cache
+/Users/tyler/backend-workspace/ProjectB/ProjectB-manage-users/manage-users/obj/Debug/net8.0/manage-users.AssemblyInfo.cs
+/Users/tyler/backend-workspace/ProjectB/ProjectB-manage-users/manage-users/obj/Debug/net8.0/manage-users.csproj.CoreCompileInputs.cache
+/Users/tyler/backend-workspace/ProjectB/ProjectB-manage-users/manage-users/obj/Debug/net8.0/manage-users.MvcApplicationPartsAssemblyInfo.cs
+/Users/tyler/backend-workspace/ProjectB/ProjectB-manage-users/manage-users/obj/Debug/net8.0/manage-users.MvcApplicationPartsAssemblyInfo.cache
+/Users/tyler/backend-workspace/ProjectB/ProjectB-manage-users/manage-users/obj/Debug/net8.0/manage-users.dll
+/Users/tyler/backend-workspace/ProjectB/ProjectB-manage-users/manage-users/obj/Debug/net8.0/refint/manage-users.dll
+/Users/tyler/backend-workspace/ProjectB/ProjectB-manage-users/manage-users/obj/Debug/net8.0/manage-users.pdb
