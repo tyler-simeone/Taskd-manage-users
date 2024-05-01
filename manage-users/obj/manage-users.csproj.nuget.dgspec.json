@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "/Users/tyler/backend-workspace/ProjectB/ProjectB-manage-users/manage-users/manage-users.csproj": {}
+    "/Users/tylersimeone/Code/ProjectB/ProjectB-manage-users/manage-users/manage-users.csproj": {}
   },
   "projects": {
-    "/Users/tyler/backend-workspace/ProjectB/ProjectB-manage-users/manage-users/manage-users.csproj": {
+    "/Users/tylersimeone/Code/ProjectB/ProjectB-manage-users/manage-users/manage-users.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/tyler/backend-workspace/ProjectB/ProjectB-manage-users/manage-users/manage-users.csproj",
+        "projectUniqueName": "/Users/tylersimeone/Code/ProjectB/ProjectB-manage-users/manage-users/manage-users.csproj",
         "projectName": "manage-users",
-        "projectPath": "/Users/tyler/backend-workspace/ProjectB/ProjectB-manage-users/manage-users/manage-users.csproj",
-        "packagesPath": "/Users/tyler/.nuget/packages/",
-        "outputPath": "/Users/tyler/backend-workspace/ProjectB/ProjectB-manage-users/manage-users/obj/",
+        "projectPath": "/Users/tylersimeone/Code/ProjectB/ProjectB-manage-users/manage-users/manage-users.csproj",
+        "packagesPath": "/Users/tylersimeone/.nuget/packages/",
+        "outputPath": "/Users/tylersimeone/Code/ProjectB/ProjectB-manage-users/manage-users/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "/Users/tyler/.nuget/NuGet/NuGet.Config"
+          "/Users/tylersimeone/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
@@ -46,6 +46,10 @@
             "Microsoft.AspNetCore.OpenApi": {
               "target": "Package",
               "version": "[8.0.4, )"
+            },
+            "MySql.Data": {
+              "target": "Package",
+              "version": "[8.4.0, )"
             },
             "Swashbuckle.AspNetCore": {
               "target": "Package",
