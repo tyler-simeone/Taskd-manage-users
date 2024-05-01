@@ -109,7 +109,7 @@ public class UsersController : Controller
     [ProducesResponseType(StatusCodes.Status200OK)]
     public IActionResult DeleteUser(int id, int updateUserId)
     {
-        if (_validator.ValidateDeleteUser(id))
+        if (_validator.ValidateDeleteUser(id, updateUserId))
         {
             try
             {
@@ -124,7 +124,7 @@ public class UsersController : Controller
         }
         else 
         {
-            return BadRequest("/id?updateUserId params are required.");
+            return BadRequest("id and updateUserId params are required.");
         }
     }
 }

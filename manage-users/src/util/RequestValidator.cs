@@ -8,7 +8,7 @@ public interface IRequestValidator
 
     bool ValidateUpdateUser(UpdateUser updateUserRequest);
 
-    bool ValidateDeleteUser(int userId);
+    bool ValidateDeleteUser(int userId, int updateUserId);
 }
 
 public class RequestValidator : IRequestValidator
@@ -38,8 +38,11 @@ public class RequestValidator : IRequestValidator
         return true;
     }
     
-    public bool ValidateDeleteUser(int userId)
+    public bool ValidateDeleteUser(int userId, int updateUserId)
     {
+        if (userId == 0 || updateUserId == 0)
+            return false;
+
         return true;
     }
 }
