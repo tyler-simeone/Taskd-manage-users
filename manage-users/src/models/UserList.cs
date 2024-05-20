@@ -1,13 +1,16 @@
-public class UserList : ResponseBase
+namespace manage_users.src.models
 {
-    public UserList()
+    public class UserList : ResponseBase
     {
-        Users = new List<User>();
+        public UserList()
+        {
+            Users = new List<User>();
+        }
+
+        public List<User> Users { get; set; }
+
+        public int PageNumber { get; set; }
+
+        public int PageSize { get; set; }
     }
-
-    public List<User> Users { get; set; }
-
-    public int PageNumber { get; set; }
-
-    public int PageSize { get; set; }
 }

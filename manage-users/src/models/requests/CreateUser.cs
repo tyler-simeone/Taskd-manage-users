@@ -1,11 +1,14 @@
-public class CreateUser
+namespace manage_users.src.models.requests
 {
-    public CreateUser()
+    public class CreateUser
     {
-        
+        public CreateUser()
+        {
+
+        }
+
+        public string UserEmail { get; set; }
+
+        public int CreateUserId { get; set; }
     }
-
-    public string UserEmail { get; set; }
-
-    public int CreateUserId { get; set; }
 }

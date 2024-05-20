@@ -1,7 +1,10 @@
-public class StringHelper 
+namespace manage_users.src.util
 {
-    public StringHelper()
+    public class StringHelper
     {
-        
+        public StringHelper()
+        {
+
+        }
     }
 }

@@ -1,9 +1,12 @@
-public class AppConstants
+namespace manage_users.src.util
 {
-    public AppConstants()
+    public class AppConstants
     {
-        
-    }
+        public AppConstants()
+        {
 
-    
+        }
+
+
+    }
 }
