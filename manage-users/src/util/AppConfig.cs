@@ -1,7 +1,10 @@
-public class AppConfig
+namespace manage_users.src.util
 {
-    public AppConfig()
+    public class AppConfig
     {
-        
+        public AppConfig()
+        {
+
+        }
     }
 }

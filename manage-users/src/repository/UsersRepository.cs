@@ -1,76 +1,83 @@
-public class UsersRepository : IUsersRepository
+using manage_users.src.dataservice;
+using manage_users.src.models;
+using manage_users.src.models.requests;
+
+namespace manage_users.src.repository
 {
-    IUsersDataservice _usersDataservice;
+    public class UsersRepository : IUsersRepository
+    {
+        IUsersDataservice _usersDataservice;
 
-    public UsersRepository(IUsersDataservice usersDataservice)
-    {
-        _usersDataservice = usersDataservice;
-    }
+        public UsersRepository(IUsersDataservice usersDataservice)
+        {
+            _usersDataservice = usersDataservice;
+        }
 
-    public async Task<User> GetUser(int userId)
-    {
-        try
+        public async Task<User> GetUser(int userId)
         {
-            User user = await _usersDataservice.GetUser(userId);
-            return user;
+            try
+            {
+                User user = await _usersDataservice.GetUser(userId);
+                return user;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+                throw;
+            }
         }
-        catch (System.Exception ex)
-        {
-            Console.WriteLine($"Error: {ex.Message}");
-            throw;
-        }
-    }
 
-    public async Task<UserList> GetUsers()
-    {
-        try
+        public async Task<UserList> GetUsers()
         {
-            UserList userList = await _usersDataservice.GetUsers();
-            return userList;
+            try
+            {
+                UserList userList = await _usersDataservice.GetUsers();
+                return userList;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+                throw;
+            }
         }
-        catch (System.Exception ex)
-        {
-            Console.WriteLine($"Error: {ex.Message}");
-            throw;
-        }
-    }
-    
-    public void CreateUser(CreateUser createUserRequest)
-    {
-        try
-        {
-            _usersDataservice.CreateUser(createUserRequest);
-        }
-        catch (System.Exception ex)
-        {
-            Console.WriteLine($"Error: {ex.Message}");
-            throw;
-        }
-    }
 
-    public void UpdateUser(UpdateUser updateUserRequest)
-    {
-        try
+        public void CreateUser(CreateUser createUserRequest)
         {
-            _usersDataservice.UpdateUser(updateUserRequest);
+            try
+            {
+                _usersDataservice.CreateUser(createUserRequest);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+                throw;
+            }
         }
-        catch (System.Exception ex)
-        {
-            Console.WriteLine($"Error: {ex.Message}");
-            throw;
-        }
-    }
 
-    public void DeleteUser(int userId, int updateUserId)
-    {
-        try
+        public void UpdateUser(UpdateUser updateUserRequest)
         {
-            _usersDataservice.DeleteUser(userId, updateUserId);
+            try
+            {
+                _usersDataservice.UpdateUser(updateUserRequest);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+                throw;
+            }
         }
-        catch (System.Exception ex)
+
+        public void DeleteUser(int userId, int updateUserId)
         {
-            Console.WriteLine($"Error: {ex.Message}");
-            throw;
+            try
+            {
+                _usersDataservice.DeleteUser(userId, updateUserId);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+                throw;
+            }
         }
     }
 }

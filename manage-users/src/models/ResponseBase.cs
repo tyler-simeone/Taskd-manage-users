@@ -1,9 +1,12 @@
-public class ResponseBase 
+namespace manage_users.src.models
 {
-    public ResponseBase()
+    public class ResponseBase
     {
-        
-    }
+        public ResponseBase()
+        {
 
-    public int StatusCode;
+        }
+
+        public int StatusCode;
+    }
 }

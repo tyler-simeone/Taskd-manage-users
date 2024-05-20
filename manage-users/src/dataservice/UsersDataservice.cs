@@ -1,191 +1,196 @@
 using System;
 using System.ComponentModel.DataAnnotations;
+using manage_users.src.models;
+using manage_users.src.models.requests;
 using MySql.Data.MySqlClient;
 
-public class UsersDataservice : IUsersDataservice
+namespace manage_users.src.dataservice
 {
-    private IConfiguration _configuration;
-    
-    public UsersDataservice(IConfiguration configuration)
+    public class UsersDataservice : IUsersDataservice
     {
-         _configuration = configuration;
-    }
+        private IConfiguration _configuration;
 
-    public async Task<User> GetUser(int userId)
-    {
-        var connectionString = _configuration.GetConnectionString("ProjectBLocalConnection");
-
-        using (MySqlConnection connection = new MySqlConnection(connectionString))
+        public UsersDataservice(IConfiguration configuration)
         {
-            string query = $"CALL ProjectB.UserGetById(@paramUserId)";
+            _configuration = configuration;
+        }
 
-            using (MySqlCommand command = new MySqlCommand(query, connection))
+        public async Task<User> GetUser(int userId)
+        {
+            var connectionString = _configuration.GetConnectionString("ProjectBLocalConnection");
+
+            using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
-                command.Parameters.AddWithValue("@paramUserId", userId);
+                string query = $"CALL ProjectB.UserGetById(@paramUserId)";
 
-                try
+                using (MySqlCommand command = new MySqlCommand(query, connection))
                 {
-                    await connection.OpenAsync();
+                    command.Parameters.AddWithValue("@paramUserId", userId);
 
-                    using (MySqlDataReader reader = command.ExecuteReader())
+                    try
                     {
-                        while (reader.Read())
-                        {
-                            return ExtractUserFromReader(reader);
-                        }
+                        await connection.OpenAsync();
 
-                        return new User();
+                        using (MySqlDataReader reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                return ExtractUserFromReader(reader);
+                            }
+
+                            return new User();
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"Error: {ex.Message}");
+                        throw;
                     }
                 }
-                catch (System.Exception ex)
-                {
-                    Console.WriteLine($"Error: {ex.Message}");
-                    throw;
-                }
             }
         }
-    }
 
-    public async Task<UserList> GetUsers()
-    {
-        var connectionString = _configuration.GetConnectionString("ProjectBLocalConnection");
-
-        using (MySqlConnection connection = new MySqlConnection(connectionString))
+        public async Task<UserList> GetUsers()
         {
-            string query = $"CALL ProjectB.UserGetList()";
+            var connectionString = _configuration.GetConnectionString("ProjectBLocalConnection");
 
-            using (MySqlCommand command = new MySqlCommand(query, connection))
+            using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
-                try
+                string query = $"CALL ProjectB.UserGetList()";
+
+                using (MySqlCommand command = new MySqlCommand(query, connection))
                 {
-                    await connection.OpenAsync();
-
-                    using (MySqlDataReader reader = command.ExecuteReader())
+                    try
                     {
-                        var userList = new UserList();
+                        await connection.OpenAsync();
 
-                        while (reader.Read())
+                        using (MySqlDataReader reader = command.ExecuteReader())
                         {
-                            User user = ExtractUserFromReader(reader);
-                            userList.Users.Add(user);
-                        }
+                            var userList = new UserList();
 
-                        return userList;
+                            while (reader.Read())
+                            {
+                                User user = ExtractUserFromReader(reader);
+                                userList.Users.Add(user);
+                            }
+
+                            return userList;
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"Error: {ex.Message}");
+                        throw;
                     }
                 }
-                catch (System.Exception ex)
-                {
-                    Console.WriteLine($"Error: {ex.Message}");
-                    throw;
-                }
             }
         }
-    }
-    
-    public async void CreateUser(CreateUser createUserRequest)
-    {
-        var connectionString = _configuration.GetConnectionString("ProjectBLocalConnection");
 
-        using (MySqlConnection connection = new MySqlConnection(connectionString))
+        public async void CreateUser(CreateUser createUserRequest)
         {
-            string query = $"CALL ProjectB.UserPersist(@paramUserId, @paramCreateUserId)";
+            var connectionString = _configuration.GetConnectionString("ProjectBLocalConnection");
 
-            using (MySqlCommand command = new MySqlCommand(query, connection))
+            using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
-                command.Parameters.AddWithValue("@paramUserId", createUserRequest.UserEmail);
-                command.Parameters.AddWithValue("@paramCreateUserId", createUserRequest.CreateUserId);
+                string query = $"CALL ProjectB.UserPersist(@paramUserId, @paramCreateUserId)";
 
-                try
+                using (MySqlCommand command = new MySqlCommand(query, connection))
                 {
-                    await connection.OpenAsync();
-                    await command.ExecuteNonQueryAsync();
-                }
-                catch (System.Exception ex)
-                {
-                    Console.WriteLine($"Error: {ex.Message}");
-                    throw;
+                    command.Parameters.AddWithValue("@paramUserId", createUserRequest.UserEmail);
+                    command.Parameters.AddWithValue("@paramCreateUserId", createUserRequest.CreateUserId);
+
+                    try
+                    {
+                        await connection.OpenAsync();
+                        await command.ExecuteNonQueryAsync();
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"Error: {ex.Message}");
+                        throw;
+                    }
                 }
             }
         }
-    }
 
-    public async void UpdateUser(UpdateUser updateUserRequest)
-    {
-        
-        var connectionString = _configuration.GetConnectionString("ProjectBLocalConnection");
-
-        using (MySqlConnection connection = new MySqlConnection(connectionString))
+        public async void UpdateUser(UpdateUser updateUserRequest)
         {
-            string query = $"CALL ProjectB.UserUpdateByUserId(@paramUserId, @paramUserEmail, @paramUpdateUserId)";
 
-            using (MySqlCommand command = new MySqlCommand(query, connection))
+            var connectionString = _configuration.GetConnectionString("ProjectBLocalConnection");
+
+            using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
-                command.Parameters.AddWithValue("@paramUserId", updateUserRequest.UserId);
-                command.Parameters.AddWithValue("@paramUserEmail", updateUserRequest.UserEmail);
-                command.Parameters.AddWithValue("@paramUpdateUserId", updateUserRequest.UpdateUserId);
+                string query = $"CALL ProjectB.UserUpdateByUserId(@paramUserId, @paramUserEmail, @paramUpdateUserId)";
 
-                try
+                using (MySqlCommand command = new MySqlCommand(query, connection))
                 {
-                    await connection.OpenAsync();
-                    await command.ExecuteNonQueryAsync();
-                }
-                catch (System.Exception ex)
-                {
-                    Console.WriteLine($"Error: {ex.Message}");
-                    throw;
+                    command.Parameters.AddWithValue("@paramUserId", updateUserRequest.UserId);
+                    command.Parameters.AddWithValue("@paramUserEmail", updateUserRequest.UserEmail);
+                    command.Parameters.AddWithValue("@paramUpdateUserId", updateUserRequest.UpdateUserId);
+
+                    try
+                    {
+                        await connection.OpenAsync();
+                        await command.ExecuteNonQueryAsync();
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"Error: {ex.Message}");
+                        throw;
+                    }
                 }
             }
         }
-    }
 
-    public async void DeleteUser(int userId, int updateUserId)
-    {
-        var connectionString = _configuration.GetConnectionString("ProjectBLocalConnection");
-
-        using (MySqlConnection connection = new MySqlConnection(connectionString))
+        public async void DeleteUser(int userId, int updateUserId)
         {
-            string query = $"CALL ProjectB.UserDelete(@paramUserId, @paramUpdateUserId)";
+            var connectionString = _configuration.GetConnectionString("ProjectBLocalConnection");
 
-            using (MySqlCommand command = new MySqlCommand(query, connection))
+            using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
-                command.Parameters.AddWithValue("@paramUserId", userId);
-                command.Parameters.AddWithValue("@paramUpdateUserId", updateUserId);
+                string query = $"CALL ProjectB.UserDelete(@paramUserId, @paramUpdateUserId)";
 
-                try
+                using (MySqlCommand command = new MySqlCommand(query, connection))
                 {
-                    await connection.OpenAsync();
-                    await command.ExecuteNonQueryAsync();
-                }
-                catch (System.Exception ex)
-                {
-                    Console.WriteLine($"Error: {ex.Message}");
-                    throw;
+                    command.Parameters.AddWithValue("@paramUserId", userId);
+                    command.Parameters.AddWithValue("@paramUpdateUserId", updateUserId);
+
+                    try
+                    {
+                        await connection.OpenAsync();
+                        await command.ExecuteNonQueryAsync();
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"Error: {ex.Message}");
+                        throw;
+                    }
                 }
             }
         }
-    }
 
-    #region HELPERS
+        #region HELPERS
 
-    private User ExtractUserFromReader(MySqlDataReader reader) 
-    {
-        int id = reader.GetInt32("UserId"); 
-        string email = reader.GetString("Email"); 
-        DateTime createDatetime = reader.GetDateTime("CreateDatetime"); 
-        int createUserId = reader.GetInt32("CreateUserId"); 
-        DateTime updateDatetime = reader.GetDateTime("UpdateDatetime"); 
-        int updateUserId = reader.GetInt32("UpdateUserId");                             
-
-        return new User()
+        private User ExtractUserFromReader(MySqlDataReader reader)
         {
-            UserId = id,
-            UserEmail = email,
-            CreateDatetime = createDatetime,
-            CreateUserId = createUserId,
-            UpdateDatetime = updateDatetime,
-            UpdateUserId = updateUserId
-        };
-    }
+            int id = reader.GetInt32("UserId");
+            string email = reader.GetString("Email");
+            DateTime createDatetime = reader.GetDateTime("CreateDatetime");
+            int createUserId = reader.GetInt32("CreateUserId");
+            DateTime updateDatetime = reader.GetDateTime("UpdateDatetime");
+            int updateUserId = reader.GetInt32("UpdateUserId");
 
-    #endregion
+            return new User()
+            {
+                UserId = id,
+                UserEmail = email,
+                CreateDatetime = createDatetime,
+                CreateUserId = createUserId,
+                UpdateDatetime = updateDatetime,
+                UpdateUserId = updateUserId
+            };
+        }
+
+        #endregion
+    }
 }
