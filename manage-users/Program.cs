@@ -1,13 +1,15 @@
-using System.Text.Json;
 using manage_users.src.dataservice;
 using manage_users.src.repository;
 using manage_users.src.util;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Configuration.AddJsonFile("appsettings.json", optional: false);
-var connectionString = builder.Configuration.GetConnectionString("ProjectBLocalConnection");
+var configuration = builder.Configuration;
+configuration.AddJsonFile("appsettings.json", optional: false);
+var connectionString = configuration.GetConnectionString("ProjectBLocalConnection");
 
 
 // Add services to the container.
@@ -33,6 +35,27 @@ builder.Services.AddSwaggerGen(options =>
         });
     });
 
+
+var userPoolId = configuration["AWS:Cognito:UserPoolId"];
+var awsRegion = configuration["AWS:Cognito:Region"];
+
+// Add JWT Bearer Authentication
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.Authority = $"https://cognito-idp.{awsRegion}.amazonaws.com/{userPoolId}";
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = false,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = $"https://cognito-idp.{awsRegion}.amazonaws.com/{userPoolId}"
+        };
+    });
+// Add authorization
+builder.Services.AddAuthorization();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -47,6 +70,11 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors("AllowAll");
+
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.MapControllers();
 
