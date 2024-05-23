@@ -2,10 +2,12 @@ using manage_users.src.models;
 using manage_users.src.models.requests;
 using manage_users.src.repository;
 using manage_users.src.util;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace manage_users.src.controller
 {
+    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class UsersController : Controller
