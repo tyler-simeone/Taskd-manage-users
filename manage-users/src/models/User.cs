@@ -9,14 +9,16 @@ namespace manage_users.src.models
 
         public int UserId { get; set; }
 
-        public string UserEmail { get; set; }
+        public string Email { get; set; }
+        
+        public string FirstName { get; set; }
+        
+        public string LastName { get; set; }
 
         public DateTime CreateDatetime { get; set; }
 
-        public int CreateUserId { get; set; }
+        public DateTime? UpdateDatetime { get; set; }
 
-        public DateTime UpdateDatetime { get; set; }
-
-        public int UpdateUserId { get; set; }
+        public int? UpdateUserId { get; set; }
     }
 }

@@ -7,8 +7,11 @@ namespace manage_users.src.models.requests
 
         }
 
-        public string UserEmail { get; set; }
+        public string Email { get; set; }
+        
 
-        public int CreateUserId { get; set; }
+        public string FirstName { get; set; }
+
+        public string LastName { get; set; }
     }
 }
