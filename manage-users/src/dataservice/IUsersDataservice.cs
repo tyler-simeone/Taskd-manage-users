@@ -7,6 +7,8 @@ namespace manage_users.src.dataservice
     {
 
         Task<User> GetUser(int userId);
+        
+        Task<User> GetUser(string email);
 
         Task<UserList> GetUsers();
 
