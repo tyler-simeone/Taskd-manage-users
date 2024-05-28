@@ -1,4 +1,6 @@
+using System.Net;
 using manage_users.src.models;
+using manage_users.src.models.errors;
 using manage_users.src.models.requests;
 using manage_users.src.repository;
 using manage_users.src.util;
@@ -34,8 +36,7 @@ namespace manage_users.src.controller
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"Error: {ex.Message}");
-                    throw;
+                    return InternalError(ex.Message);
                 }
             }
             else
@@ -57,8 +58,7 @@ namespace manage_users.src.controller
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"Error: {ex.Message}");
-                    throw;
+                    return InternalError(ex.Message);
                 }
             }
             else
@@ -69,7 +69,7 @@ namespace manage_users.src.controller
 
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public IActionResult CreateTask(CreateUser createUserRequest)
+        public IActionResult CreateUser(CreateUser createUserRequest)
         {
             if (_validator.ValidateCreateUser(createUserRequest))
             {
@@ -80,8 +80,7 @@ namespace manage_users.src.controller
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"Error: {ex.Message}");
-                    throw;
+                    return InternalError(ex.Message);
                 }
             }
             else
@@ -103,8 +102,7 @@ namespace manage_users.src.controller
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"Error: {ex.Message}");
-                    throw;
+                    return InternalError(ex.Message);
                 }
             }
             else
@@ -126,8 +124,7 @@ namespace manage_users.src.controller
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"Error: {ex.Message}");
-                    throw;
+                    return InternalError(ex.Message);
                 }
             }
             else
@@ -135,5 +132,20 @@ namespace manage_users.src.controller
                 return BadRequest("id and updateUserId params are required.");
             }
         }
+
+        #region HELPERS
+
+        private ObjectResult InternalError(string message)
+        {
+            var errorResponse = new ErrorResponse
+            {
+                Status = HttpStatusCode.InternalServerError,
+                Type = "InternalServerError",
+                Detail = message
+            };
+            return StatusCode(StatusCodes.Status500InternalServerError, errorResponse);
+        }
+
+        #endregion 
     }
 }

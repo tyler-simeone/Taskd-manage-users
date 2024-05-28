@@ -92,12 +92,13 @@ namespace manage_users.src.dataservice
 
             using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
-                string query = $"CALL ProjectB.UserPersist(@paramUserId, @paramCreateUserId)";
+                string query = $"CALL ProjectB.UserPersist(@paramUserId, @paramFirstName, @paramLastName)";
 
                 using (MySqlCommand command = new MySqlCommand(query, connection))
                 {
-                    command.Parameters.AddWithValue("@paramUserId", createUserRequest.UserEmail);
-                    command.Parameters.AddWithValue("@paramCreateUserId", createUserRequest.CreateUserId);
+                    command.Parameters.AddWithValue("@paramUserId", createUserRequest.Email);
+                    command.Parameters.AddWithValue("@paramFirstName", createUserRequest.FirstName);
+                    command.Parameters.AddWithValue("@paramLastName", createUserRequest.LastName);
 
                     try
                     {
@@ -120,12 +121,14 @@ namespace manage_users.src.dataservice
 
             using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
-                string query = $"CALL ProjectB.UserUpdateByUserId(@paramUserId, @paramUserEmail, @paramUpdateUserId)";
+                string query = $"CALL ProjectB.UserUpdateByUserId(@paramUserId, @paramEmail, @paramFirstName, @paramLastName, @paramUpdateUserId)";
 
                 using (MySqlCommand command = new MySqlCommand(query, connection))
                 {
                     command.Parameters.AddWithValue("@paramUserId", updateUserRequest.UserId);
-                    command.Parameters.AddWithValue("@paramUserEmail", updateUserRequest.UserEmail);
+                    command.Parameters.AddWithValue("@paramEmail", updateUserRequest.Email);
+                    command.Parameters.AddWithValue("@paramFirstName", updateUserRequest.FirstName);
+                    command.Parameters.AddWithValue("@paramLastName", updateUserRequest.LastName);
                     command.Parameters.AddWithValue("@paramUpdateUserId", updateUserRequest.UpdateUserId);
 
                     try
@@ -175,17 +178,19 @@ namespace manage_users.src.dataservice
         {
             int id = reader.GetInt32("UserId");
             string email = reader.GetString("Email");
+            string firstName = reader.GetString("FirstName");
+            string lastName = reader.GetString("LastName");
             DateTime createDatetime = reader.GetDateTime("CreateDatetime");
-            int createUserId = reader.GetInt32("CreateUserId");
-            DateTime updateDatetime = reader.GetDateTime("UpdateDatetime");
-            int updateUserId = reader.GetInt32("UpdateUserId");
+            DateTime? updateDatetime = reader.IsDBNull(reader.GetOrdinal("UpdateDatetime")) ? null : reader.GetDateTime("UpdateDatetime");
+            int? updateUserId = reader.IsDBNull(reader.GetOrdinal("UpdateUserId")) ? null : reader.GetInt32("UpdateUserId");
 
             return new User()
             {
                 UserId = id,
-                UserEmail = email,
+                Email = email,
+                FirstName = firstName,
+                LastName = lastName,
                 CreateDatetime = createDatetime,
-                CreateUserId = createUserId,
                 UpdateDatetime = updateDatetime,
                 UpdateUserId = updateUserId
             };
