@@ -213,8 +213,8 @@ namespace manage_users.src.dataservice
         {
             int id = reader.GetInt32("UserId");
             string email = reader.GetString("Email");
-            string firstName = reader.GetString("FirstName");
-            string lastName = reader.GetString("LastName");
+            string firstName = reader.IsDBNull(reader.GetOrdinal("FirstName")) ? String.Empty : reader.GetString("FirstName");
+            string lastName = reader.IsDBNull(reader.GetOrdinal("LastName")) ? String.Empty : reader.GetString("LastName");
             DateTime createDatetime = reader.GetDateTime("CreateDatetime");
             DateTime? updateDatetime = reader.IsDBNull(reader.GetOrdinal("UpdateDatetime")) ? null : reader.GetDateTime("UpdateDatetime");
             int? updateUserId = reader.IsDBNull(reader.GetOrdinal("UpdateUserId")) ? null : reader.GetInt32("UpdateUserId");

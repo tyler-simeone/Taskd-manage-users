@@ -23,7 +23,7 @@ namespace manage_users.src.controller
             _usersRepository = usersRepository;
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("id/{id}")]
         [ProducesResponseType(typeof(User), StatusCodes.Status200OK)]
         public async Task<ActionResult<User>> GetUser(int id)
         {
