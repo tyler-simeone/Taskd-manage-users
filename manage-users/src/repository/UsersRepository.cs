@@ -26,6 +26,20 @@ namespace manage_users.src.repository
                 throw;
             }
         }
+        
+        public async Task<User> GetUser(string email)
+        {
+            try
+            {
+                User user = await _usersDataservice.GetUser(email);
+                return user;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+                throw;
+            }
+        }
 
         public async Task<UserList> GetUsers()
         {

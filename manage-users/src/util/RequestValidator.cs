@@ -5,6 +5,8 @@ namespace manage_users.src.util
     public interface IRequestValidator
     {
         bool ValidateGetUser(int userId);
+        
+        bool ValidateGetUser(string email);
 
         bool ValidateGetUsers();
 
@@ -23,6 +25,11 @@ namespace manage_users.src.util
         }
 
         public bool ValidateGetUser(int userId)
+        {
+            return true;
+        }
+        
+        public bool ValidateGetUser(string email)
         {
             return true;
         }

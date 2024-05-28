@@ -49,6 +49,41 @@ namespace manage_users.src.dataservice
                 }
             }
         }
+        
+        public async Task<User> GetUser(string email)
+        {
+            var connectionString = _configuration.GetConnectionString("ProjectBLocalConnection");
+
+            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            {
+                string query = $"CALL ProjectB.UserGetByEmail(@paramEmail)";
+
+                using (MySqlCommand command = new MySqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@paramEmail", email);
+
+                    try
+                    {
+                        await connection.OpenAsync();
+
+                        using (MySqlDataReader reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                return ExtractUserFromReader(reader);
+                            }
+
+                            return new User();
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"Error: {ex.Message}");
+                        throw;
+                    }
+                }
+            }
+        }
 
         public async Task<UserList> GetUsers()
         {

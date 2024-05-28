@@ -44,6 +44,28 @@ namespace manage_users.src.controller
                 return BadRequest("User ID is required.");
             }
         }
+        
+        [HttpGet("email/{email}")]
+        [ProducesResponseType(typeof(User), StatusCodes.Status200OK)]
+        public async Task<ActionResult<User>> GetUser(string email)
+        {
+            if (_validator.ValidateGetUser(email))
+            {
+                try
+                {
+                    User user = await _usersRepository.GetUser(email);
+                    return Ok(user);
+                }
+                catch (Exception ex)
+                {
+                    return InternalError(ex.Message);
+                }
+            }
+            else
+            {
+                return BadRequest("Email is required.");
+            }
+        }
 
         [HttpGet]
         [ProducesResponseType(typeof(UserList), StatusCodes.Status200OK)]
