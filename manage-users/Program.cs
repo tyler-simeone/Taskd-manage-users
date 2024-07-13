@@ -35,9 +35,21 @@ builder.Services.AddSwaggerGen(options =>
         });
     });
 
+// Configure Kestrel to listen on port 80
+builder.WebHost.ConfigureKestrel(serverOptions =>
+{
+    serverOptions.ListenAnyIP(80); 
+});
 
-var userPoolId = configuration["AWS:Cognito:UserPoolId"];
-var awsRegion = configuration["AWS:Cognito:Region"];
+
+
+var userPoolId = configuration["UserPoolId"];
+if (userPoolId.IsNullOrEmpty())
+    userPoolId = configuration["AWS:Cognito:UserPoolId"];
+
+var awsRegion = configuration["Region"];
+if (awsRegion.IsNullOrEmpty())
+    awsRegion = configuration["AWS:Cognito:Region"];
 
 // Add JWT Bearer Authentication
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)

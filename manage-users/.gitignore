@@ -511,3 +511,4 @@ bld/
 [Oo]bj/
 
 *.Development.json
+.env
