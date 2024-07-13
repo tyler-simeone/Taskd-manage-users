@@ -2,6 +2,7 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using manage_users.src.models;
 using manage_users.src.models.requests;
+using Microsoft.IdentityModel.Tokens;
 using MySql.Data.MySqlClient;
 
 namespace manage_users.src.dataservice
@@ -9,17 +10,19 @@ namespace manage_users.src.dataservice
     public class UsersDataservice : IUsersDataservice
     {
         private IConfiguration _configuration;
+        private string _conx;
 
         public UsersDataservice(IConfiguration configuration)
         {
             _configuration = configuration;
+            _conx = _configuration["ProjectBLocalConnection"];
+            if (_conx.IsNullOrEmpty())
+                _conx = _configuration.GetConnectionString("ProjectBLocalConnection");
         }
 
         public async Task<User> GetUser(int userId)
         {
-            var connectionString = _configuration.GetConnectionString("ProjectBLocalConnection");
-
-            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            using (MySqlConnection connection = new MySqlConnection(_conx))
             {
                 string query = $"CALL ProjectB.UserGetById(@paramUserId)";
 
@@ -52,9 +55,7 @@ namespace manage_users.src.dataservice
         
         public async Task<User> GetUser(string email)
         {
-            var connectionString = _configuration.GetConnectionString("ProjectBLocalConnection");
-
-            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            using (MySqlConnection connection = new MySqlConnection(_conx))
             {
                 string query = $"CALL ProjectB.UserGetByEmail(@paramEmail)";
 
@@ -87,9 +88,7 @@ namespace manage_users.src.dataservice
 
         public async Task<UserList> GetUsers()
         {
-            var connectionString = _configuration.GetConnectionString("ProjectBLocalConnection");
-
-            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            using (MySqlConnection connection = new MySqlConnection(_conx))
             {
                 string query = $"CALL ProjectB.UserGetList()";
 
@@ -123,9 +122,7 @@ namespace manage_users.src.dataservice
 
         public async void CreateUser(CreateUser createUserRequest)
         {
-            var connectionString = _configuration.GetConnectionString("ProjectBLocalConnection");
-
-            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            using (MySqlConnection connection = new MySqlConnection(_conx))
             {
                 string query = $"CALL ProjectB.UserPersist(@paramUserId, @paramFirstName, @paramLastName)";
 
@@ -151,10 +148,7 @@ namespace manage_users.src.dataservice
 
         public async void UpdateUser(UpdateUser updateUserRequest)
         {
-
-            var connectionString = _configuration.GetConnectionString("ProjectBLocalConnection");
-
-            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            using (MySqlConnection connection = new MySqlConnection(_conx))
             {
                 string query = $"CALL ProjectB.UserUpdateByUserId(@paramUserId, @paramEmail, @paramFirstName, @paramLastName, @paramUpdateUserId)";
 
@@ -182,9 +176,7 @@ namespace manage_users.src.dataservice
 
         public async void DeleteUser(int userId, int updateUserId)
         {
-            var connectionString = _configuration.GetConnectionString("ProjectBLocalConnection");
-
-            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            using (MySqlConnection connection = new MySqlConnection(_conx))
             {
                 string query = $"CALL ProjectB.UserDelete(@paramUserId, @paramUpdateUserId)";
 
