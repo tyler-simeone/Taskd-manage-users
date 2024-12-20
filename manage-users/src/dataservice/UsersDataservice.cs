@@ -1,5 +1,4 @@
-using System;
-using System.ComponentModel.DataAnnotations;
+using System.Data;
 using manage_users.src.models;
 using manage_users.src.models.requests;
 using Microsoft.IdentityModel.Tokens;
@@ -16,18 +15,19 @@ namespace manage_users.src.dataservice
         {
             _configuration = configuration;
             _conx = _configuration["ProjectBLocalConnection"];
+            
             if (_conx.IsNullOrEmpty())
                 _conx = _configuration.GetConnectionString("ProjectBLocalConnection");
         }
 
         public async Task<User> GetUser(int userId)
         {
-            using (MySqlConnection connection = new MySqlConnection(_conx))
+            using (MySqlConnection connection = new(_conx))
             {
-                string query = $"CALL ProjectB.UserGetById(@paramUserId)";
-
-                using (MySqlCommand command = new MySqlCommand(query, connection))
+                using (MySqlCommand command = new("ProjectB.UserGetById", connection))
                 {
+                    command.CommandType = CommandType.StoredProcedure;
+
                     command.Parameters.AddWithValue("@paramUserId", userId);
 
                     try
@@ -55,12 +55,12 @@ namespace manage_users.src.dataservice
         
         public async Task<User> GetUser(string email)
         {
-            using (MySqlConnection connection = new MySqlConnection(_conx))
+            using (MySqlConnection connection = new(_conx))
             {
-                string query = $"CALL ProjectB.UserGetByEmail(@paramEmail)";
-
-                using (MySqlCommand command = new MySqlCommand(query, connection))
+                using (MySqlCommand command = new("ProjectB.UserGetByEmail", connection))
                 {
+                    command.CommandType = CommandType.StoredProcedure;
+
                     command.Parameters.AddWithValue("@paramEmail", email);
 
                     try
@@ -88,12 +88,12 @@ namespace manage_users.src.dataservice
 
         public async Task<UserList> GetUsers()
         {
-            using (MySqlConnection connection = new MySqlConnection(_conx))
+            using (MySqlConnection connection = new(_conx))
             {
-                string query = $"CALL ProjectB.UserGetList()";
-
-                using (MySqlCommand command = new MySqlCommand(query, connection))
+                using (MySqlCommand command = new("ProjectB.UserGetList", connection))
                 {
+                    command.CommandType = CommandType.StoredProcedure;
+
                     try
                     {
                         await connection.OpenAsync();
@@ -122,12 +122,12 @@ namespace manage_users.src.dataservice
 
         public async void CreateUser(CreateUser createUserRequest)
         {
-            using (MySqlConnection connection = new MySqlConnection(_conx))
+            using (MySqlConnection connection = new(_conx))
             {
-                string query = $"CALL ProjectB.UserPersist(@paramUserId, @paramFirstName, @paramLastName)";
-
-                using (MySqlCommand command = new MySqlCommand(query, connection))
+                using (MySqlCommand command = new("ProjectB.UserPersist", connection))
                 {
+                    command.CommandType = CommandType.StoredProcedure;
+
                     command.Parameters.AddWithValue("@paramUserId", createUserRequest.Email);
                     command.Parameters.AddWithValue("@paramFirstName", createUserRequest.FirstName);
                     command.Parameters.AddWithValue("@paramLastName", createUserRequest.LastName);
@@ -148,12 +148,12 @@ namespace manage_users.src.dataservice
 
         public async void UpdateUser(UpdateUser updateUserRequest)
         {
-            using (MySqlConnection connection = new MySqlConnection(_conx))
+            using (MySqlConnection connection = new(_conx))
             {
-                string query = $"CALL ProjectB.UserUpdateByUserId(@paramUserId, @paramEmail, @paramFirstName, @paramLastName, @paramUpdateUserId)";
-
-                using (MySqlCommand command = new MySqlCommand(query, connection))
+                using (MySqlCommand command = new("ProjectB.UserUpdateByUserId", connection))
                 {
+                    command.CommandType = CommandType.StoredProcedure;
+
                     command.Parameters.AddWithValue("@paramUserId", updateUserRequest.UserId);
                     command.Parameters.AddWithValue("@paramEmail", updateUserRequest.Email);
                     command.Parameters.AddWithValue("@paramFirstName", updateUserRequest.FirstName);
@@ -176,12 +176,12 @@ namespace manage_users.src.dataservice
 
         public async void DeleteUser(int userId, int updateUserId)
         {
-            using (MySqlConnection connection = new MySqlConnection(_conx))
+            using (MySqlConnection connection = new(_conx))
             {
-                string query = $"CALL ProjectB.UserDelete(@paramUserId, @paramUpdateUserId)";
-
-                using (MySqlCommand command = new MySqlCommand(query, connection))
+                using (MySqlCommand command = new("ProjectB.UserDelete", connection))
                 {
+                    command.CommandType = CommandType.StoredProcedure;
+
                     command.Parameters.AddWithValue("@paramUserId", userId);
                     command.Parameters.AddWithValue("@paramUpdateUserId", updateUserId);
 
@@ -211,7 +211,7 @@ namespace manage_users.src.dataservice
             DateTime? updateDatetime = reader.IsDBNull(reader.GetOrdinal("UpdateDatetime")) ? null : reader.GetDateTime("UpdateDatetime");
             int? updateUserId = reader.IsDBNull(reader.GetOrdinal("UpdateUserId")) ? null : reader.GetInt32("UpdateUserId");
 
-            return new User()
+            return new User
             {
                 UserId = id,
                 Email = email,

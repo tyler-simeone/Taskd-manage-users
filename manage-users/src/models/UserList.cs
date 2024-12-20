@@ -4,7 +4,7 @@ namespace manage_users.src.models
     {
         public UserList()
         {
-            Users = new List<User>();
+            Users = [];
         }
 
         public List<User> Users { get; set; }
