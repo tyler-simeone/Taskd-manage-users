@@ -9,7 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 var configuration = builder.Configuration;
 configuration.AddJsonFile("appsettings.json", optional: false);
-var connectionString = configuration.GetConnectionString("ProjectBLocalConnection");
+var connectionString = configuration.GetConnectionString("LocalDBConnection");
 
 
 // Add services to the container.

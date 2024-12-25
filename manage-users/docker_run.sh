@@ -9,7 +9,7 @@ docker run -d \
   -p 5222:80 \
   -e UserPoolId=$USER_POOL_ID \
   -e Region=$REGION \
-  -e ProjectBLocalConnection=$PROJECT_B_LOCAL_CONX \
+  -e LocalDBConnection=$LOCAL_DB_CONX \
   tylersimeone/projectb/manage-users:latest
 
 if [ $? -ne 0 ]; then
