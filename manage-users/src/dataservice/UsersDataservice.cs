@@ -18,13 +18,15 @@ namespace manage_users.src.dataservice
             
             if (_conx.IsNullOrEmpty())
                 _conx = _configuration.GetConnectionString("LocalDBConnection");
+
+            Console.WriteLine($"DB Connection: {_conx}");
         }
 
         public async Task<User> GetUser(int userId)
         {
             using (MySqlConnection connection = new(_conx))
             {
-                using (MySqlCommand command = new("ProjectB.UserGetById", connection))
+                using (MySqlCommand command = new("taskd_db_dev.UserGetById", connection))
                 {
                     command.CommandType = CommandType.StoredProcedure;
 
@@ -57,7 +59,7 @@ namespace manage_users.src.dataservice
         {
             using (MySqlConnection connection = new(_conx))
             {
-                using (MySqlCommand command = new("ProjectB.UserGetByEmail", connection))
+                using (MySqlCommand command = new("taskd_db_dev.UserGetByEmail", connection))
                 {
                     command.CommandType = CommandType.StoredProcedure;
 
@@ -90,7 +92,7 @@ namespace manage_users.src.dataservice
         {
             using (MySqlConnection connection = new(_conx))
             {
-                using (MySqlCommand command = new("ProjectB.UserGetList", connection))
+                using (MySqlCommand command = new("taskd_db_dev.UserGetList", connection))
                 {
                     command.CommandType = CommandType.StoredProcedure;
 
@@ -124,7 +126,7 @@ namespace manage_users.src.dataservice
         {
             using (MySqlConnection connection = new(_conx))
             {
-                using (MySqlCommand command = new("ProjectB.UserPersist", connection))
+                using (MySqlCommand command = new("taskd_db_dev.UserPersist", connection))
                 {
                     command.CommandType = CommandType.StoredProcedure;
 
@@ -150,7 +152,7 @@ namespace manage_users.src.dataservice
         {
             using (MySqlConnection connection = new(_conx))
             {
-                using (MySqlCommand command = new("ProjectB.UserUpdateByUserId", connection))
+                using (MySqlCommand command = new("taskd_db_dev.UserUpdateByUserId", connection))
                 {
                     command.CommandType = CommandType.StoredProcedure;
 
@@ -178,7 +180,7 @@ namespace manage_users.src.dataservice
         {
             using (MySqlConnection connection = new(_conx))
             {
-                using (MySqlCommand command = new("ProjectB.UserDelete", connection))
+                using (MySqlCommand command = new("taskd_db_dev.UserDelete", connection))
                 {
                     command.CommandType = CommandType.StoredProcedure;
 
