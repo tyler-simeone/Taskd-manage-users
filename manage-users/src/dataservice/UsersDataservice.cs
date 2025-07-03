@@ -124,27 +124,23 @@ namespace manage_users.src.dataservice
 
         public async void CreateUser(CreateUser createUserRequest)
         {
-            using (MySqlConnection connection = new(_conx))
+            try
             {
-                using (MySqlCommand command = new("taskd_db_dev.UserPersist", connection))
-                {
-                    command.CommandType = CommandType.StoredProcedure;
+                using MySqlConnection connection = new(_conx);
+                using MySqlCommand command = new("taskd_db_dev.UserPersist", connection);
+                command.CommandType = CommandType.StoredProcedure;
 
-                    command.Parameters.AddWithValue("@paramUserId", createUserRequest.Email);
-                    command.Parameters.AddWithValue("@paramFirstName", createUserRequest.FirstName);
-                    command.Parameters.AddWithValue("@paramLastName", createUserRequest.LastName);
+                command.Parameters.AddWithValue("@paramEmail", createUserRequest.Email);
+                command.Parameters.AddWithValue("@paramFirstName", createUserRequest.FirstName);
+                command.Parameters.AddWithValue("@paramLastName", createUserRequest.LastName);
 
-                    try
-                    {
-                        await connection.OpenAsync();
-                        await command.ExecuteNonQueryAsync();
-                    }
-                    catch (Exception ex)
-                    {
-                        Console.WriteLine($"Error: {ex.Message}");
-                        throw;
-                    }
-                }
+                await connection.OpenAsync();
+                await command.ExecuteNonQueryAsync();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+                throw;
             }
         }
 
