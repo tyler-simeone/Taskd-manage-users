@@ -27,21 +27,14 @@ namespace manage_users.src.controller
         [ProducesResponseType(typeof(User), StatusCodes.Status200OK)]
         public async Task<ActionResult<User>> GetUser(int id)
         {
-            if (_validator.ValidateGetUser(id))
+            try
             {
-                try
-                {
-                    User user = await _usersRepository.GetUser(id);
-                    return Ok(user);
-                }
-                catch (Exception ex)
-                {
-                    return InternalError(ex.Message);
-                }
+                User user = await _usersRepository.GetUser(id);
+                return Ok(user);
             }
-            else
+            catch (Exception ex)
             {
-                return BadRequest("User ID is required.");
+                return InternalError(ex.Message);
             }
         }
         
@@ -49,21 +42,14 @@ namespace manage_users.src.controller
         [ProducesResponseType(typeof(User), StatusCodes.Status200OK)]
         public async Task<ActionResult<User>> GetUser(string email)
         {
-            if (_validator.ValidateGetUser(email))
+            try
             {
-                try
-                {
-                    User user = await _usersRepository.GetUser(email);
-                    return Ok(user);
-                }
-                catch (Exception ex)
-                {
-                    return InternalError(ex.Message);
-                }
+                User user = await _usersRepository.GetUser(email);
+                return Ok(user);
             }
-            else
+            catch (Exception ex)
             {
-                return BadRequest("Email is required.");
+                return InternalError(ex.Message);
             }
         }
 
@@ -71,21 +57,14 @@ namespace manage_users.src.controller
         [ProducesResponseType(typeof(UserList), StatusCodes.Status200OK)]
         public async Task<ActionResult<UserList>> GetUsers()
         {
-            if (_validator.ValidateGetUsers())
+            try
             {
-                try
-                {
-                    UserList userList = await _usersRepository.GetUsers();
-                    return Ok(userList);
-                }
-                catch (Exception ex)
-                {
-                    return InternalError(ex.Message);
-                }
+                UserList userList = await _usersRepository.GetUsers();
+                return Ok(userList);
             }
-            else
+            catch (Exception ex)
             {
-                return BadRequest();
+                return InternalError(ex.Message);
             }
         }
 
@@ -93,21 +72,14 @@ namespace manage_users.src.controller
         [ProducesResponseType(StatusCodes.Status200OK)]
         public IActionResult CreateUser(CreateUser createUserRequest)
         {
-            if (_validator.ValidateCreateUser(createUserRequest))
+            try
             {
-                try
-                {
-                    _usersRepository.CreateUser(createUserRequest);
-                    return Ok("User Created");
-                }
-                catch (Exception ex)
-                {
-                    return InternalError(ex.Message);
-                }
+                _usersRepository.CreateUser(createUserRequest);
+                return Ok("User Created");
             }
-            else
+            catch (Exception ex)
             {
-                return BadRequest("CreateUser is required.");
+                return InternalError(ex.Message);
             }
         }
 
@@ -115,21 +87,14 @@ namespace manage_users.src.controller
         [ProducesResponseType(StatusCodes.Status200OK)]
         public IActionResult UpdateUser(UpdateUser updateUserRequest)
         {
-            if (_validator.ValidateUpdateUser(updateUserRequest))
+            try
             {
-                try
-                {
-                    _usersRepository.UpdateUser(updateUserRequest);
-                    return Ok("User Updated");
-                }
-                catch (Exception ex)
-                {
-                    return InternalError(ex.Message);
-                }
+                _usersRepository.UpdateUser(updateUserRequest);
+                return Ok("User Updated");
             }
-            else
+            catch (Exception ex)
             {
-                return BadRequest("UpdateUser is required.");
+                return InternalError(ex.Message);
             }
         }
 
@@ -138,20 +103,16 @@ namespace manage_users.src.controller
         public IActionResult DeleteUser(int id, int updateUserId)
         {
             if (_validator.ValidateDeleteUser(id, updateUserId))
-            {
-                try
-                {
-                    _usersRepository.DeleteUser(id, updateUserId);
-                    return Ok("User Deleted");
-                }
-                catch (Exception ex)
-                {
-                    return InternalError(ex.Message);
-                }
-            }
-            else
-            {
                 return BadRequest("id and updateUserId params are required.");
+
+            try
+            {
+                _usersRepository.DeleteUser(id, updateUserId);
+                return Ok("User Deleted");
+            }
+            catch (Exception ex)
+            {
+                return InternalError(ex.Message);
             }
         }
 
